@@ -14,8 +14,12 @@ SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
 def fetch_prices():
     prices = {}
     for symbol in SYMBOLS:
-        r = requests.get(BINANCE_URL, params={"symbol": symbol})
-        prices[symbol] = float(r.json()["price"])
+        r = requests.get(BINANCE_URL, params={"symbol": symbol}, timeout=10)
+        data = r.json()
+        if "price" not in data:
+            print(f"[ERROR] {symbol} unexpected response: {data}")
+            raise KeyError(f"'price' not found in response for {symbol}")
+        prices[symbol] = float(data["price"])
     return prices
 
 def send_telegram(message):
