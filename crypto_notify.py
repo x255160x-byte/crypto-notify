@@ -6,20 +6,20 @@ from datetime import datetime
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
-BINANCE_URL = "https://api.binance.com/api/v3/ticker/price"
+OKX_URL = "https://www.okx.com/api/v5/market/ticker"
 TELEGRAM_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
-SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
+SYMBOLS = ["BTC-USDT", "ETH-USDT", "SOL-USDT"]
 
 def fetch_prices():
     prices = {}
-    for symbol in SYMBOLS:
-        r = requests.get(BINANCE_URL, params={"symbol": symbol}, timeout=10)
+    for inst_id in SYMBOLS:
+        r = requests.get(OKX_URL, params={"instId": inst_id}, timeout=10)
         data = r.json()
-        if "price" not in data:
-            print(f"[ERROR] {symbol} unexpected response: {data}")
-            raise KeyError(f"'price' not found in response for {symbol}")
-        prices[symbol] = float(data["price"])
+        if not data.get("data"):
+            print(f"[ERROR] {inst_id} unexpected response: {data}")
+            raise KeyError(f"'data' not found in response for {inst_id}")
+        prices[inst_id] = float(data["data"][0]["last"])
     return prices
 
 def send_telegram(message):
@@ -35,10 +35,10 @@ def main():
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     message = (
-        f"\U0001f4ca 幣安即時報價\n"
-        f"BTC：${prices['BTCUSDT']:,.0f} USDT\n"
-        f"ETH：${prices['ETHUSDT']:,.2f} USDT\n"
-        f"SOL：${prices['SOLUSDT']:,.2f} USDT\n"
+        f"\U0001f4ca OKX 即時報價\n"
+        f"BTC：${prices['BTC-USDT']:,.0f} USDT\n"
+        f"ETH：${prices['ETH-USDT']:,.2f} USDT\n"
+        f"SOL：${prices['SOL-USDT']:,.2f} USDT\n"
         f"\u23f0 {now}"
     )
 
