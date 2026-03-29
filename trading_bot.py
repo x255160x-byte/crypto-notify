@@ -174,7 +174,8 @@ def main():
 
     print(f"  ETH:   ${ind['close']:,.2f}")
     print(f"  EMA99: {ind['ema99']:.2f}  斜率: {ind['slope']:+.3f}")
-    print(f"  MA45:  {ind['ma45']:.2f if ind['ma45'] else 'N/A'}")
+    ma45_str = f"{ind['ma45']:.2f}" if ind['ma45'] else 'N/A'
+    print(f"  MA45:  {ma45_str}")
     print(f"  SL多:  {ind['low25']:.2f}  SL空: {ind['high25']:.2f}")
     print(f"  上穿:  {ind['cross_up']}  下穿: {ind['cross_down']}")
     print(f"  USDT:  {bal:,.2f}  持倉: {pos}")
@@ -245,7 +246,7 @@ def main():
                 f"幣對：{INST_ID}\n"
                 f"入場價：{ind['close']:,.2f}\n"
                 f"止損：{sl_price:,.2f}\n"
-                f"止盈目標：MA45 {ind['ma45']:.2f if ind['ma45'] else 'N/A'}\n"
+                f"止盈目標：MA45 {ma45_str}\n"
                 f"下單：{sz_contracts} 張｜風險：{risk_amt:.1f} USDT\n"
                 f"EMA99 斜率：{ind['slope']:+.3f}\n"
                 f"訂單：{ord_id}\n"
