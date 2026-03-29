@@ -113,7 +113,9 @@ def get_balance():
         raise Exception(f"餘額失敗: {data}")
     for d in data['data'][0]['details']:
         if d['ccy'] == 'USDT':
-            return float(d['availEq'])
+            # availEq 有時為空，改用 cashBal 或 eq 作為備援
+            val = d.get('availEq') or d.get('cashBal') or d.get('eq') or '0'
+            return float(val)
     return 0.0
 
 def get_position():
