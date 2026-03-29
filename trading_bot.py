@@ -15,7 +15,7 @@ TG_TOKEN   = os.environ['TELEGRAM_BOT_TOKEN']
 TG_CHAT    = os.environ['TELEGRAM_CHAT_ID']
 
 INST_ID  = "ETH-USDT-SWAP"
-BAR      = "5m"
+BAR      = "15m"
 RISK_PCT = 0.01
 BASE     = "https://www.okx.com"
 
