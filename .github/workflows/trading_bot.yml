@@ -2,7 +2,7 @@ name: EMA99 Trading Bot
 
 on:
   schedule:
-    - cron: '0,15,30,45 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
